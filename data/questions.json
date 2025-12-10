@@ -1,0 +1,62 @@
+[
+    {
+        "id": "1",
+        "text": "Which shape comes next in the pattern?",
+        "options": [
+            "Circle",
+            "Square",
+            "Triangle",
+            "Star"
+        ],
+        "correctAnswer": 2,
+        "hint": "Count the number of sides: 1, 4, 3... wait, look at the order!"
+    },
+    {
+        "id": "2",
+        "text": "If a red house is made of red bricks, and a blue house is made of blue bricks, what is a greenhouse made of?",
+        "options": [
+            "Green Bricks",
+            "Glass",
+            "Wood",
+            "Stone"
+        ],
+        "correctAnswer": 1,
+        "hint": "It's where plants grow!"
+    },
+    {
+        "id": "3",
+        "text": "What has keys but cannot open locks?",
+        "options": [
+            "A Map",
+            "A Piano",
+            "A Clock",
+            "A Book"
+        ],
+        "correctAnswer": 1,
+        "hint": "It makes music."
+    },
+    {
+        "id": "4",
+        "text": "I am tall when I am young, and I am short when I am old. What am I?",
+        "options": [
+            "A Tree",
+            "A Candle",
+            "A Person",
+            "A Mountain"
+        ],
+        "correctAnswer": 1,
+        "hint": "I melt away."
+    },
+    {
+        "id": "5",
+        "text": "Which month has 28 days?",
+        "options": [
+            "February",
+            "March",
+            "November",
+            "All of them"
+        ],
+        "correctAnswer": 3,
+        "hint": "Think carefully! Every month has at least 28 days."
+    }
+]
