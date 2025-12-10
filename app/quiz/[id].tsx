@@ -7,6 +7,7 @@ import ScreenWrapper from '../../components/ScreenWrapper';
 import QuestionCard from '../../components/QuestionCard';
 import { Colors } from '../../constants/Colors';
 import questionsData from '../../data/questions.json';
+import { saveProgress } from '../../utils/storage';
 
 export default function QuizScreen() {
     const { id } = useLocalSearchParams(); // Treat id as "Question Index" + 1 for now
@@ -35,6 +36,10 @@ export default function QuizScreen() {
         await playSound(isCorrect);
 
         if (isCorrect) {
+            // Save Progress!
+            const currentLevel = questionIndex + 1;
+            await saveProgress(currentLevel + 1);
+
             // Correct! Move to next
             Alert.alert('Correct!', 'Great job!', [
                 {

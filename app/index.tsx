@@ -1,24 +1,57 @@
-import { Text, StyleSheet } from 'react-native';
-import { Link } from 'expo-router';
+import { useState, useCallback } from 'react';
+import { Text, StyleSheet, ScrollView, View } from 'react-native';
+import { useRouter, useFocusEffect } from 'expo-router';
 import ScreenWrapper from '../components/ScreenWrapper';
+import LevelButton from '../components/LevelButton';
 import { Colors } from '../constants/Colors';
+import { getProgress } from '../utils/storage';
+import questionsData from '../data/questions.json';
 
 export default function Index() {
+    const router = useRouter();
+    const [highestLevel, setHighestLevel] = useState(1);
+
+    useFocusEffect(
+        useCallback(() => {
+            loadProgress();
+        }, [])
+    );
+
+    const loadProgress = async () => {
+        const level = await getProgress();
+        setHighestLevel(level);
+    };
+
     return (
         <ScreenWrapper style={styles.container}>
             <Text style={styles.title}>BrainSpark</Text>
             <Text style={styles.subtitle}>Logic Puzzles for Kids</Text>
-            <Link href="/quiz/1" style={styles.link}>
-                <Text style={styles.linkText}>Start Phase 2 Quiz (Placeholder)</Text>
-            </Link>
+
+            <ScrollView
+                showsVerticalScrollIndicator={false}
+                contentContainerStyle={styles.listContent}
+            >
+                {questionsData.map((_, index) => {
+                    const level = index + 1;
+                    const isLocked = level > highestLevel;
+
+                    return (
+                        <LevelButton
+                            key={level}
+                            level={level}
+                            isLocked={isLocked}
+                            onPress={() => router.push(`/quiz/${level}`)}
+                        />
+                    );
+                })}
+            </ScrollView>
         </ScreenWrapper>
     );
 }
 
 const styles = StyleSheet.create({
     container: {
-        justifyContent: 'center',
-        alignItems: 'center',
+        paddingTop: 40,
     },
     title: {
         fontFamily: 'Fredoka_700Bold',
@@ -34,15 +67,7 @@ const styles = StyleSheet.create({
         marginBottom: 32,
         textAlign: 'center',
     },
-    link: {
-        backgroundColor: Colors.secondary,
-        paddingVertical: 12,
-        paddingHorizontal: 24,
-        borderRadius: 999,
-    },
-    linkText: {
-        color: Colors.white,
-        fontFamily: 'Fredoka_600SemiBold',
-        fontSize: 18,
+    listContent: {
+        paddingBottom: 40,
     },
 });
