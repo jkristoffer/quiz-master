@@ -12,6 +12,7 @@
     "format:check": "prettier --check .",
     "test": "jest",
     "test:e2e": "playwright test",
+    "build:web": "npx expo export -p web",
     "type-check": "tsc --noEmit",
     "prepare": "husky"
   },
