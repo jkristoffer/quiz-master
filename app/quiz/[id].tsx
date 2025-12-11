@@ -128,27 +128,20 @@ export default function QuizScreen() {
   const handleNext = () => {
     setFeedback({ ...feedback, visible: false });
 
-    if (feedback.isCorrect) {
-      const nextIndex = questionIndex + 1;
-      if (nextIndex < questionsData.length) {
-        // Pass score to next question
-        router.replace({
-          pathname: `/quiz/${nextIndex + 1}`,
-          params: { score: currentScore },
-        });
-      } else {
-        // Finish quiz - go to results
-        router.replace({
-          pathname: '/quiz/results',
-          params: { score: currentScore },
-        });
-      }
+    // ALWAYS move to next question regardless of correctness
+    const nextIndex = questionIndex + 1;
+    if (nextIndex < questionsData.length) {
+      // Pass score to next question
+      router.replace({
+        pathname: `/quiz/${nextIndex + 1}`,
+        params: { score: currentScore },
+      });
     } else {
-      // Retry same question - score doesn't increment on retry in this logic?
-      // User didn't specify retry logic details. Resetting score might be harsh.
-      // Keeping current score as is.
-      startTimer(); // Restart timer for retry
-      setTimeLeft(question.duration || 10);
+      // Finish quiz - go to results
+      router.replace({
+        pathname: '/quiz/results',
+        params: { score: currentScore },
+      });
     }
   };
 
@@ -231,7 +224,7 @@ export default function QuizScreen() {
             )}
             <Pressable style={styles.modalButton} onPress={handleNext} testID="modal-next-button">
               <Text style={styles.modalButtonText}>
-                {feedback.isCorrect ? 'NEXT LEVEL' : 'TRY AGAIN'}
+                {feedback.isCorrect ? 'NEXT LEVEL' : 'NEXT QUESTION'}
               </Text>
             </Pressable>
           </View>
