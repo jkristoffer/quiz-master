@@ -1,8 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, Pressable, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, Text, Pressable, StyleSheet, TouchableOpacity, Image } from 'react-native';
 import { Colors } from '../constants/Colors';
+import NumericKeypad from './NumericKeypad';
+import { QuestionAssets } from '../constants/AssetMap';
+import AnimatedScaleButton from './AnimatedScaleButton';
 
-export type QuestionType = 'mcq' | 'true-false' | 'multi-select';
+export type QuestionType = 'mcq' | 'true-false' | 'multi-select' | 'numeric' | 'visual-selection';
 
 export interface BaseQuestion {
   id: string;
@@ -28,7 +31,20 @@ export interface MultiSelectQuestion extends BaseQuestion {
   correctAnswer: number[];
 }
 
-export type Question = MCQQuestion | TrueFalseQuestion | MultiSelectQuestion;
+export interface NumericQuestion extends BaseQuestion {
+  type: 'numeric';
+  correctAnswer: number;
+}
+
+export type VisualZone = 'top-left' | 'top-right' | 'bottom-left' | 'bottom-right';
+
+export interface VisualQuestion extends BaseQuestion {
+  type: 'visual-selection';
+  imageUrl: string;
+  correctAnswer: VisualZone;
+}
+
+export type Question = MCQQuestion | TrueFalseQuestion | MultiSelectQuestion | NumericQuestion | VisualQuestion;
 
 interface QuestionCardProps {
   question: Question;
@@ -38,10 +54,12 @@ interface QuestionCardProps {
 
 export default function QuestionCard({ question, onAnswer, disabled }: QuestionCardProps) {
   const [multiSelection, setMultiSelection] = useState<number[]>([]);
+  const [numericInput, setNumericInput] = useState<string>('');
 
-  // Reset multi-selection when question changes
+  // Reset states when question changes
   useEffect(() => {
     setMultiSelection([]);
+    setNumericInput('');
   }, [question.id]);
 
   const handleMultiSelect = (index: number) => {
@@ -58,51 +76,70 @@ export default function QuestionCard({ question, onAnswer, disabled }: QuestionC
     onAnswer(multiSelection);
   };
 
+  const handleNumericPress = (key: string) => {
+    if (numericInput.length < 8) { // Limit length
+      setNumericInput(prev => prev + key);
+    }
+  };
+
+  const handleNumericDelete = () => {
+    setNumericInput(prev => prev.slice(0, -1));
+  };
+
+  const submitNumeric = () => {
+    if (numericInput.length > 0) {
+      onAnswer(parseInt(numericInput, 10));
+    }
+  };
+
   const renderMCQ = (q: MCQQuestion) => (
     <View style={styles.optionsContainer}>
       {q.options.map((option, index) => (
-        <Pressable
+        <AnimatedScaleButton
           key={index}
-          style={({ pressed }) => [
+          style={[
             styles.optionButton,
-            pressed && styles.optionPressed,
             disabled && styles.optionDisabled,
           ]}
           onPress={() => onAnswer(index)}
           disabled={disabled}
         >
           <Text style={styles.optionText}>{option}</Text>
-        </Pressable>
+        </AnimatedScaleButton>
       ))}
     </View>
   );
 
   const renderTrueFalse = (q: TrueFalseQuestion) => (
     <View style={styles.trueFalseContainer}>
-      <Pressable
-        style={({ pressed }) => [
-          styles.tfButton,
-          styles.trueButton,
-          pressed && styles.optionPressed,
-          disabled && styles.optionDisabled,
-        ]}
-        onPress={() => onAnswer(true)}
-        disabled={disabled}
-      >
-        <Text style={styles.tfText}>True</Text>
-      </Pressable>
-      <Pressable
-        style={({ pressed }) => [
-          styles.tfButton,
-          styles.falseButton,
-          pressed && styles.optionPressed,
-          disabled && styles.optionDisabled,
-        ]}
-        onPress={() => onAnswer(false)}
-        disabled={disabled}
-      >
-        <Text style={styles.tfText}>False</Text>
-      </Pressable>
+      <View style={{ flex: 1 }}>
+        <AnimatedScaleButton
+          containerStyle={{ height: '100%' }}
+          style={[
+            styles.tfButton,
+            styles.trueButton,
+            disabled && styles.optionDisabled,
+          ]}
+          onPress={() => onAnswer(true)}
+          disabled={disabled}
+        >
+          <Text style={styles.tfText}>True</Text>
+        </AnimatedScaleButton>
+      </View>
+      <View style={{ flex: 1 }}>
+        <AnimatedScaleButton
+          containerStyle={{ height: '100%' }}
+          style={[
+            styles.tfButton,
+            styles.falseButton,
+            disabled && styles.optionDisabled,
+          ]}
+          onPress={() => onAnswer(false)}
+          disabled={disabled}
+        >
+          <Text style={styles.tfText}>False</Text>
+        </AnimatedScaleButton>
+      </View>
     </View>
   );
 
@@ -112,12 +149,11 @@ export default function QuestionCard({ question, onAnswer, disabled }: QuestionC
       {q.options.map((option, index) => {
         const isSelected = multiSelection.includes(index);
         return (
-          <Pressable
+          <AnimatedScaleButton
             key={index}
-            style={({ pressed }) => [
+            style={[
               styles.optionButton,
               isSelected && styles.optionSelected,
-              pressed && styles.optionPressed,
               disabled && styles.optionDisabled,
             ]}
             onPress={() => handleMultiSelect(index)}
@@ -127,7 +163,7 @@ export default function QuestionCard({ question, onAnswer, disabled }: QuestionC
               {option}
             </Text>
             {isSelected && <View style={styles.checkmark} />}
-          </Pressable>
+          </AnimatedScaleButton>
         );
       })}
       <TouchableOpacity
@@ -140,6 +176,48 @@ export default function QuestionCard({ question, onAnswer, disabled }: QuestionC
     </View>
   );
 
+  const renderNumeric = (q: NumericQuestion) => (
+    <View style={styles.numericContainer}>
+      <View style={styles.displayContainer}>
+        <Text style={styles.displayText}>{numericInput || '?'}</Text>
+      </View>
+      <NumericKeypad
+        onPress={handleNumericPress}
+        onDelete={handleNumericDelete}
+        onSubmit={submitNumeric}
+        disabled={disabled}
+      />
+    </View>
+  );
+
+  const renderVisualSelection = (q: VisualQuestion) => {
+    const imageSource = QuestionAssets[q.imageUrl]; // Expecting key from AssetMap
+
+    if (!imageSource) {
+      return <Text style={styles.errorText}>Image not found</Text>;
+    }
+
+    return (
+      <View style={styles.visualContainer}>
+        <Text style={styles.hintText}>Tap the correct area:</Text>
+        <View style={styles.imageWrapper}>
+          <Image source={imageSource} style={styles.visualImage} resizeMode="contain" />
+
+          <View style={styles.zonesOverlay}>
+            <View style={styles.zoneRow}>
+              <Pressable style={styles.zone} onPress={() => onAnswer('top-left')} disabled={disabled} />
+              <Pressable style={styles.zone} onPress={() => onAnswer('top-right')} disabled={disabled} />
+            </View>
+            <View style={styles.zoneRow}>
+              <Pressable style={styles.zone} onPress={() => onAnswer('bottom-left')} disabled={disabled} />
+              <Pressable style={styles.zone} onPress={() => onAnswer('bottom-right')} disabled={disabled} />
+            </View>
+          </View>
+        </View>
+      </View>
+    );
+  };
+
   // Default to MCQ if type is missing for backward compatibility
   const questionType = question.type || 'mcq';
 
@@ -150,6 +228,8 @@ export default function QuestionCard({ question, onAnswer, disabled }: QuestionC
       {questionType === 'mcq' && renderMCQ(question as MCQQuestion)}
       {questionType === 'true-false' && renderTrueFalse(question as TrueFalseQuestion)}
       {questionType === 'multi-select' && renderMultiSelect(question as MultiSelectQuestion)}
+      {questionType === 'numeric' && renderNumeric(question as NumericQuestion)}
+      {questionType === 'visual-selection' && renderVisualSelection(question as VisualQuestion)}
     </View>
   );
 }
@@ -177,7 +257,7 @@ const styles = StyleSheet.create({
     gap: 16,
   },
   optionButton: {
-    backgroundColor: Colors.background,
+    backgroundColor: Colors.background, // Normal background
     padding: 16,
     borderRadius: 12,
     borderWidth: 2,
@@ -186,10 +266,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
   },
-  optionPressed: {
-    backgroundColor: '#E2E8F0',
-    transform: [{ scale: 0.98 }],
-  },
+  // Removed optionPressed style as animation handles scaling now.
   optionSelected: {
     backgroundColor: '#E0F2FE',
     borderColor: '#0EA5E9',
@@ -212,7 +289,8 @@ const styles = StyleSheet.create({
     height: 120,
   },
   tfButton: {
-    flex: 1,
+    width: '100%', // Fill wrapper
+    height: '100%', // Fill wrapper
     borderRadius: 16,
     alignItems: 'center',
     justifyContent: 'center',
@@ -266,5 +344,57 @@ const styles = StyleSheet.create({
     backgroundColor: '#0EA5E9',
     position: 'absolute',
     right: 16,
+  },
+  // Numeric Styles
+  numericContainer: {
+    alignItems: 'center',
+  },
+  displayContainer: {
+    backgroundColor: '#F8FAFC',
+    borderWidth: 2,
+    borderColor: '#E2E8F0',
+    borderRadius: 12,
+    padding: 16,
+    width: 200,
+    alignItems: 'center',
+    marginBottom: 16,
+  },
+  displayText: {
+    fontFamily: 'Fredoka_600SemiBold',
+    fontSize: 32,
+    color: Colors.text,
+  },
+  // Visual Selection Styles
+  visualContainer: {
+    alignItems: 'center',
+    width: '100%',
+  },
+  errorText: {
+    color: 'red',
+    fontFamily: 'Fredoka_400Regular',
+  },
+  imageWrapper: {
+    width: '100%',
+    aspectRatio: 1, // Square for now, or adjustable
+    position: 'relative',
+    borderRadius: 16,
+    overflow: 'hidden',
+    backgroundColor: '#F1F5F9',
+  },
+  visualImage: {
+    width: '100%',
+    height: '100%',
+  },
+  zonesOverlay: {
+    ...StyleSheet.absoluteFillObject,
+    flexDirection: 'column',
+  },
+  zoneRow: {
+    flex: 1,
+    flexDirection: 'row',
+  },
+  zone: {
+    flex: 1,
+    // borderWidth: 1, borderColor: 'rgba(0,0,0,0.1)', // Debug borders
   },
 });

@@ -9,7 +9,7 @@ export const saveProgress = async (level: number) => {
       await AsyncStorage.setItem(LEVEL_KEY, level.toString());
     }
   } catch (e) {
-    console.error('Failed to save progress', e);
+    // console.error('Failed to save progress', e);
   }
 };
 
@@ -18,7 +18,7 @@ export const getProgress = async (): Promise<number> => {
     const value = await AsyncStorage.getItem(LEVEL_KEY);
     return value ? parseInt(value, 10) : 1;
   } catch (e) {
-    console.error('Failed to load progress', e);
+    // console.error('Failed to load progress', e);
     return 1;
   }
 };
@@ -27,6 +27,6 @@ export const resetProgress = async () => {
   try {
     await AsyncStorage.removeItem(LEVEL_KEY);
   } catch (e) {
-    console.error('Failed to reset progress', e);
+    // console.error('Failed to reset progress', e);
   }
 };

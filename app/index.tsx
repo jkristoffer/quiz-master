@@ -1,5 +1,5 @@
 import { useState, useCallback } from 'react';
-import { Text, StyleSheet, ScrollView, View } from 'react-native';
+import { Text, StyleSheet, ScrollView } from 'react-native';
 import { useRouter, useFocusEffect } from 'expo-router';
 import ScreenWrapper from '../components/ScreenWrapper';
 import LevelButton from '../components/LevelButton';

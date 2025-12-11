@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, Modal, Pressable } from 'react-native';
 import { useLocalSearchParams, useRouter } from 'expo-router';
-import { Audio } from 'expo-av';
 
 import ScreenWrapper from '../../components/ScreenWrapper';
 import QuestionCard, { Question } from '../../components/QuestionCard';
@@ -32,7 +31,7 @@ export default function QuizScreen() {
 
   // Sound placeholders
   const playSound = async (correct: boolean) => {
-    console.log(correct ? 'Sound: DING!' : 'Sound: BUZZ!');
+    // console.log(correct ? 'Sound: DING!' : 'Sound: BUZZ!');
   };
 
   const handleAnswer = async (answer: any) => {

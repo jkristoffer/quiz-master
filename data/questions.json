@@ -26,8 +26,17 @@
     "type": "multi-select",
     "category": "Art",
     "text": "Which of these are primary colors?",
-    "options": ["Red", "Green", "Blue", "Yellow"],
-    "correctAnswer": [0, 2, 3],
+    "options": [
+      "Red",
+      "Green",
+      "Blue",
+      "Yellow"
+    ],
+    "correctAnswer": [
+      0,
+      2,
+      3
+    ],
     "hint": "Think of basic colors used to mix others (RYB model)."
   },
   {
@@ -50,8 +59,16 @@
     "type": "multi-select",
     "category": "Science",
     "text": "Which of these are mammals?",
-    "options": ["Shark", "Whale", "Dolphin", "Crocodile"],
-    "correctAnswer": [1, 2],
+    "options": [
+      "Shark",
+      "Whale",
+      "Dolphin",
+      "Crocodile"
+    ],
+    "correctAnswer": [
+      1,
+      2
+    ],
     "hint": "They breathe air and nurse their young."
   },
   {
@@ -66,7 +83,12 @@
     "type": "mcq",
     "category": "Geography",
     "text": "What is the capital of France?",
-    "options": ["Berlin", "Madrid", "Paris", "Rome"],
+    "options": [
+      "Berlin",
+      "Madrid",
+      "Paris",
+      "Rome"
+    ],
     "correctAnswer": 2,
     "hint": "Eiffel Tower is here."
   },
@@ -83,8 +105,16 @@
     "type": "multi-select",
     "category": "Tech",
     "text": "Which of these are programming languages?",
-    "options": ["Python", "Snake", "C++", "Cobra"],
-    "correctAnswer": [0, 2],
+    "options": [
+      "Python",
+      "Snake",
+      "C++",
+      "Cobra"
+    ],
+    "correctAnswer": [
+      0,
+      2
+    ],
     "hint": "Reptiles are not code."
   },
   {
@@ -92,7 +122,12 @@
     "type": "mcq",
     "category": "Nature",
     "text": "What is the fastest land animal?",
-    "options": ["Cheetah", "Lion", "Horse", "Eagle"],
+    "options": [
+      "Cheetah",
+      "Lion",
+      "Horse",
+      "Eagle"
+    ],
     "correctAnswer": 0,
     "hint": "It has spots."
   },
@@ -101,7 +136,12 @@
     "type": "mcq",
     "category": "Riddle",
     "text": "I speak without a mouth and hear without ears. I have no body, but I come alive with wind.",
-    "options": ["An Echo", "A Ghost", "A Radio", "A Cloud"],
+    "options": [
+      "An Echo",
+      "A Ghost",
+      "A Radio",
+      "A Cloud"
+    ],
     "correctAnswer": 0,
     "hint": "Repeat after me."
   },
@@ -118,7 +158,12 @@
     "type": "mcq",
     "category": "Math",
     "text": "How many sides does a hexagon have?",
-    "options": ["5", "6", "7", "8"],
+    "options": [
+      "5",
+      "6",
+      "7",
+      "8"
+    ],
     "correctAnswer": 1,
     "hint": "Hex means six."
   },
@@ -127,8 +172,17 @@
     "type": "multi-select",
     "category": "Cooking",
     "text": "Which of these are common ingredients in a basic cake?",
-    "options": ["Flour", "Cement", "Sugar", "Eggs"],
-    "correctAnswer": [0, 2, 3],
+    "options": [
+      "Flour",
+      "Cement",
+      "Sugar",
+      "Eggs"
+    ],
+    "correctAnswer": [
+      0,
+      2,
+      3
+    ],
     "hint": "One of these is for building houses."
   },
   {
@@ -136,7 +190,12 @@
     "type": "mcq",
     "category": "Science",
     "text": "Which planet is closest to the Sun?",
-    "options": ["Earth", "Mars", "Mercury", "Venus"],
+    "options": [
+      "Earth",
+      "Mars",
+      "Mercury",
+      "Venus"
+    ],
     "correctAnswer": 2,
     "hint": "It's the smallest planet."
   },
@@ -145,8 +204,148 @@
     "type": "mcq",
     "category": "Riddle",
     "text": "What gets wetter as it dries?",
-    "options": ["A Towel", "A Sponge", "A Cloud", "Water"],
+    "options": [
+      "A Towel",
+      "A Sponge",
+      "A Cloud",
+      "Water"
+    ],
     "correctAnswer": 0,
     "hint": "You use it after a shower."
+  },
+  {
+    "id": "19",
+    "type": "numeric",
+    "category": "Science",
+    "text": "How many legs does a spider have?",
+    "correctAnswer": 8,
+    "hint": "It's double the number of legs a dog has."
+  },
+  {
+    "id": "20",
+    "type": "visual-selection",
+    "category": "Logic",
+    "text": "Tap the Red Circle.",
+    "imageUrl": "shapes_quadrants",
+    "correctAnswer": "top-left",
+    "hint": "Look at the top row."
+  },
+  {
+    "id": "21",
+    "type": "visual-selection",
+    "category": "Logic",
+    "text": "Tap the Green Triangle.",
+    "imageUrl": "shapes_quadrants",
+    "correctAnswer": "bottom-left",
+    "hint": "It's below the circle."
+  },
+  {
+    "id": "w1-1",
+    "type": "mcq",
+    "category": "Nature",
+    "text": "Which animal is known as the 'King of the Jungle'?",
+    "options": [
+      "The Lion",
+      "The Mouse",
+      "The Frog",
+      "The Cow"
+    ],
+    "correctAnswer": 0,
+    "hint": "It has a big mane and roars!"
+  },
+  {
+    "id": "w1-2",
+    "type": "true-false",
+    "category": "Nature",
+    "text": "Elephants are the smallest land animals.",
+    "correctAnswer": false,
+    "hint": "Think about how big they are compared to a mouse."
+  },
+  {
+    "id": "w1-3",
+    "type": "numeric",
+    "category": "Nature",
+    "text": "How many trunks does an elephant have?",
+    "correctAnswer": 1,
+    "hint": "It uses it to drink water!"
+  },
+  {
+    "id": "w1-4",
+    "type": "visual-selection",
+    "category": "Nature",
+    "text": "Tap the Monkey!",
+    "imageUrl": "jungle_animals_quadrants",
+    "correctAnswer": "top-left",
+    "hint": "It likes bananas and is hanging around."
+  },
+  {
+    "id": "w1-5",
+    "type": "mcq",
+    "category": "Nature",
+    "text": "What color are most leaves in the jungle?",
+    "options": [
+      "Blue",
+      "Green",
+      "Purple",
+      "Pink"
+    ],
+    "correctAnswer": 1,
+    "hint": "The color of grass."
+  },
+  {
+    "id": "w1-6",
+    "type": "multi-select",
+    "category": "Nature",
+    "text": "Which of these animals can fly?",
+    "options": [
+      "Parrot",
+      "Lion",
+      "Eagle",
+      "Snake"
+    ],
+    "correctAnswer": [
+      0,
+      2
+    ],
+    "hint": "They have wings!"
+  },
+  {
+    "id": "w1-7",
+    "type": "true-false",
+    "category": "Nature",
+    "text": "Monkeys love to eat bananas.",
+    "correctAnswer": true,
+    "hint": "It's a yellow fruit."
+  },
+  {
+    "id": "w1-8",
+    "type": "numeric",
+    "category": "Nature",
+    "text": "If you see 2 Lions and 2 Parrots, how many animals is that?",
+    "correctAnswer": 4,
+    "hint": "2 + 2 = ?"
+  },
+  {
+    "id": "w1-9",
+    "type": "visual-selection",
+    "category": "Nature",
+    "text": "Tap the Parrot!",
+    "imageUrl": "jungle_animals_quadrants",
+    "correctAnswer": "top-right",
+    "hint": "It has colorful feathers."
+  },
+  {
+    "id": "w1-10",
+    "type": "mcq",
+    "category": "Nature",
+    "text": "Which animal has a very long neck?",
+    "options": [
+      "Pig",
+      "Giraffe",
+      "Cat",
+      "Dog"
+    ],
+    "correctAnswer": 1,
+    "hint": "It eats leaves from tall trees."
   }
 ]
