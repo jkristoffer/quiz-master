@@ -6,12 +6,12 @@ Use this prompt to generate a structured commit message and documentation update
 1. **Analyze Changes**: Run `git status` and `git diff` (or read recent changes).
 2. **Contextualize**: Compare changes against `task.md` and `PRD.md`.
 3. **Generate Output**:
-    - **Title**: Conventional Commit format (e.g., `feat:`, `fix:`, `chore:`, `docs:`).
-    - **Summary**: 1-2 sentences explaining *why* this change happened.
-    - **Changes**: Bulleted list of technical changes.
-    - **Milestone Check**:
-        - If a defined Phase in `task.md` was completed (all items checked), suggest a **Tag** (e.g., `v0.1.0-phase1`).
-        - If partial work, note "Work in Progress".
+   - **Title**: Conventional Commit format (e.g., `feat:`, `fix:`, `chore:`, `docs:`).
+   - **Summary**: 1-2 sentences explaining _why_ this change happened.
+   - **Changes**: Bulleted list of technical changes.
+   - **Milestone Check**:
+     - If a defined Phase in `task.md` was completed (all items checked), suggest a **Tag** (e.g., `v0.1.0-phase1`).
+     - If partial work, note "Work in Progress".
 
 ## Example Output Format
 

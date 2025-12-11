@@ -2,10 +2,10 @@
 Project Name: BrainSpark (Web-First MVP) Version: 1.1 Target Platform: Web (Primary) -> iOS/Android (Secondary/Future) Tech Stack: React Native (Expo) + TypeScript
 
 1. Executive Summary
-BrainSpark is an interactive logic puzzle game for children aged 8–10. Strategic Pivot: We will launch immediately as a Web App to allow for instant sharing, testing, and feedback. However, the code will be built using a "Universal Architecture" (React Native), ensuring that converting it to a native iOS/Android app in the future requires near-zero code rewriting.
+   BrainSpark is an interactive logic puzzle game for children aged 8–10. Strategic Pivot: We will launch immediately as a Web App to allow for instant sharing, testing, and feedback. However, the code will be built using a "Universal Architecture" (React Native), ensuring that converting it to a native iOS/Android app in the future requires near-zero code rewriting.
 
 2. Technical Architecture (The "Universal" Stack)
-This section is critical for the AI Agent to understand.
+   This section is critical for the AI Agent to understand.
 
 Framework: Expo (React Native).
 
@@ -22,12 +22,12 @@ State Management: React Context API.
 Data Persistence: AsyncStorage (Uses LocalStorage on Web, Native Storage on Mobile).
 
 3. Target Audience
-Primary User: Children (8–10 years old). They engage with "juicy" feedback and clear progression.
+   Primary User: Children (8–10 years old). They engage with "juicy" feedback and clear progression.
 
 Secondary User: Parents. They value the "no setup" aspect of a web link and the educational value.
 
 4. Core Features (Functional Requirements)
-A. The "Universal" UI Layout
+   A. The "Universal" UI Layout
 
 Responsive Wrapper: A master ScreenWrapper component must be used.
 
@@ -60,14 +60,14 @@ Action: Triggers a specific hint text or hides 1 wrong answer.
 Cost: Cooldown timer (5 seconds) to prevent spamming.
 
 5. Non-Functional Requirements
-Privacy (COPPA): No user accounts. No cookies tracking personal data. All progress is saved locally to the browser's storage.
+   Privacy (COPPA): No user accounts. No cookies tracking personal data. All progress is saved locally to the browser's storage.
 
 Performance: The Web App must load in under 2 seconds on 4G networks.
 
 PWA (Progressive Web App): The web app must be installable (add to home screen) and capable of running offline if possible.
 
 6. Development Phases (AI Agent Roadmap)
-Phase 1: The "Universal" Skeleton
+   Phase 1: The "Universal" Skeleton
 
 Setup Expo + Expo Router.
 
@@ -92,6 +92,6 @@ Build the WorldMap screen with locking logic.
 Add animations (confetti, button presses).
 
 7. Monetization Strategy (Revised)
-Web MVP: Free to play (focus on user acquisition and feedback).
+   Web MVP: Free to play (focus on user acquisition and feedback).
 
 Native App (Future): Freemium model (World 1 Free, $2.99 IAP for full game).
