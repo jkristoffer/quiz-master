@@ -31,4 +31,32 @@ test.describe('Quiz Logic', () => {
     await expect(page).toHaveURL(/\/quiz\/2/);
     await expect(page.getByText('Question 2')).toBeVisible();
   });
+
+  test('should handle timeout: Auto-fail when time runs out', async ({ page }) => {
+    // 1. Start Quiz (Level 1)
+    // IMPORTANT: Level 1 duration is 10s. We need to wait for it.
+    await page.goto('/');
+    await page.getByText('Level 1', { exact: true }).click();
+    await expect(page).toHaveURL(/\/quiz\/1/);
+
+    // 2. Wait for Timeout (10s + buffer)
+    // We can use page.waitForTimeout or just expect with long timeout.
+    // Let's rely on the text changing to "0s" or the modal appearing.
+    // Ideally, we'd mock the timer, but for e2e let's just wait 11s.
+    // It's a bit slow but reliable for "visual" / real-time testing.
+    // Use test.setTimeout to ensure test doesn't fail before logic triggers.
+    test.setTimeout(30000);
+
+    // Expect "Time's Up!" modal text or similar failure message.
+    // The implementation plan says message: "Time's Up!"
+    // We will wait up to 15s for this.
+    await expect(page.getByText("Time's Up!")).toBeVisible({ timeout: 15000 });
+
+    // 3. Verify Modal Button allows next question
+    await expect(page.getByTestId('modal-next-button')).toBeVisible();
+    await page.getByTestId('modal-next-button').click();
+
+    // 4. Verify moved to Q2
+    await expect(page).toHaveURL(/\/quiz\/2/);
+  });
 });

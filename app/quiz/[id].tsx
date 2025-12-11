@@ -48,13 +48,28 @@ export default function QuizScreen() {
     return () => stopTimer();
   }, [id]);
 
+  const handleTimeout = () => {
+    stopTimer();
+    setFeedback({
+      visible: true,
+      isCorrect: false,
+      message: "Time's Up!", // Validated by E2E test
+      earnedPoints: 0,
+    });
+  };
+
   const startTimer = () => {
     stopTimer();
     timerRef.current = setInterval(() => {
       setTimeLeft((prev) => {
         if (prev <= 1) {
-          stopTimer();
-          // handleTimeout(); // Optional: Auto-submit or just stop
+          stopTimer(); // Ensure we don't go negative
+          // We can't call handleTimeout here directly if it sets state that depends on current render cycle safely without potential issues,
+          // but since specific effect cleanup isn't strict here, standard state update is fine.
+          // However, calling a function from setState callback is tricky if function isn't stable.
+          // Better pattern: Check prev value.
+          // To call handleTimeout safely from the interval, we can just call it.
+          handleTimeout();
           return 0;
         }
         return prev - 1;
