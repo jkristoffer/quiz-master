@@ -1,7 +1,9 @@
 import { test, expect } from '@playwright/test';
 
 test.describe('Quiz Navigation', () => {
-  test('should allow navigating linearly, seeing progress, and confirming exit', async ({ page }) => {
+  test('should allow navigating linearly, seeing progress, and confirming exit', async ({
+    page,
+  }) => {
     // 1. Start from Home
     await page.goto('/');
 
@@ -30,7 +32,7 @@ test.describe('Quiz Navigation', () => {
 
     // 5. Click "Exit" and Handle Confirmation
     // Dealing with window.confirm or Alert in Playwright
-    page.on('dialog', async dialog => {
+    page.on('dialog', async (dialog) => {
       expect(dialog.message()).toContain('Are you sure you want to quit?');
       await dialog.accept(); // Click OK
     });

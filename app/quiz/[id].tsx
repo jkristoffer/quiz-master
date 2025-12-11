@@ -158,7 +158,9 @@ export default function QuizScreen() {
     };
 
     if (Platform.OS === 'web') {
-      const confirm = window.confirm('Are you sure you want to quit? Your progress will only be saved up to the last completed level.');
+      const confirm = window.confirm(
+        'Are you sure you want to quit? Your progress will only be saved up to the last completed level.'
+      );
       if (confirm) {
         exitAction();
       }
@@ -185,9 +187,7 @@ export default function QuizScreen() {
   return (
     <ScreenWrapper style={styles.container}>
       <View style={styles.header}>
-        <View style={styles.headerLeft}>
-          {/* Back button removed for linear flow */}
-        </View>
+        <View style={styles.headerLeft}>{/* Back button removed for linear flow */}</View>
 
         <View style={styles.statsContainer}>
           <View style={styles.statChip}>
