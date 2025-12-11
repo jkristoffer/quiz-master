@@ -1,8 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { View, Text, StyleSheet, Modal, Pressable } from 'react-native';
+import { View, Text, StyleSheet, Modal, Pressable, Alert, Platform } from 'react-native';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 
-import { ChevronLeft, X, Clock, Trophy } from 'lucide-react-native';
+import { X, Clock, Trophy } from 'lucide-react-native';
 
 import ScreenWrapper from '../../components/ScreenWrapper';
 import QuestionCard, { Question } from '../../components/QuestionCard';
@@ -10,6 +10,7 @@ import { Colors } from '../../constants/Colors';
 import questionsData from '../../data/questions.json';
 import { saveProgress } from '../../utils/storage';
 import AnimatedScaleButton from '../../components/AnimatedScaleButton';
+import ProgressBar from '../../components/ProgressBar';
 
 export default function QuizScreen() {
   const { id, score } = useLocalSearchParams<{ id: string; score: string }>();
@@ -17,7 +18,6 @@ export default function QuizScreen() {
 
   const questionIndex = typeof id === 'string' ? parseInt(id, 10) - 1 : 0;
   const question = questionsData[questionIndex] as unknown as Question;
-  const isFirstQuestion = questionIndex === 0;
 
   // State
   const incomingScore = score ? parseInt(score, 10) : 0;
@@ -151,14 +151,27 @@ export default function QuizScreen() {
     }
   };
 
-  const handleBack = () => {
-    if (questionIndex > 0) {
-      router.replace(`/quiz/${questionIndex}`);
-    }
-  };
-
   const handleExit = () => {
-    router.replace('/');
+    const exitAction = () => {
+      stopTimer();
+      router.replace('/');
+    };
+
+    if (Platform.OS === 'web') {
+      const confirm = window.confirm('Are you sure you want to quit? Your progress will only be saved up to the last completed level.');
+      if (confirm) {
+        exitAction();
+      }
+    } else {
+      Alert.alert(
+        'Quit Quiz?',
+        'Are you sure you want to quit? Your progress will only be saved up to the last completed level.',
+        [
+          { text: 'Cancel', style: 'cancel' },
+          { text: 'Quit', style: 'destructive', onPress: exitAction },
+        ]
+      );
+    }
   };
 
   if (!question) {
@@ -173,11 +186,7 @@ export default function QuizScreen() {
     <ScreenWrapper style={styles.container}>
       <View style={styles.header}>
         <View style={styles.headerLeft}>
-          {!isFirstQuestion && (
-            <AnimatedScaleButton onPress={handleBack} style={styles.navButton} testID="back-button">
-              <ChevronLeft size={28} color={Colors.primary} />
-            </AnimatedScaleButton>
-          )}
+          {/* Back button removed for linear flow */}
         </View>
 
         <View style={styles.statsContainer}>
@@ -197,6 +206,8 @@ export default function QuizScreen() {
           </AnimatedScaleButton>
         </View>
       </View>
+
+      <ProgressBar current={questionIndex + 1} total={questionsData.length} />
 
       <Text style={styles.levelText}>Question {questionIndex + 1}</Text>
 
@@ -222,11 +233,7 @@ export default function QuizScreen() {
             )}
             <Pressable style={styles.modalButton} onPress={handleNext} testID="modal-next-button">
               <Text style={styles.modalButtonText}>
-                {feedback.isCorrect
-                  ? questionIndex + 1 < questionsData.length
-                    ? 'NEXT QUESTION'
-                    : 'FINISH QUIZ'
-                  : 'TRY AGAIN'}
+                {feedback.isCorrect ? 'NEXT LEVEL' : 'TRY AGAIN'}
               </Text>
             </Pressable>
           </View>
