@@ -11,6 +11,7 @@ import questionsData from '../../data/questions.json';
 import { saveProgress } from '../../utils/storage';
 import AnimatedScaleButton from '../../components/AnimatedScaleButton';
 import ProgressBar from '../../components/ProgressBar';
+import CircularTimer from '../../components/CircularTimer';
 
 export default function QuizScreen() {
   const { id, score } = useLocalSearchParams<{ id: string; score: string }>();
@@ -190,10 +191,7 @@ export default function QuizScreen() {
         <View style={styles.headerLeft}>{/* Back button removed for linear flow */}</View>
 
         <View style={styles.statsContainer}>
-          <View style={styles.statChip}>
-            <Clock size={16} color={Colors.text} />
-            <Text style={[styles.statText, timeLeft <= 3 && styles.urgentText]}>{timeLeft}s</Text>
-          </View>
+          <CircularTimer duration={question.duration || 10} remaining={timeLeft} size={40} />
           <View style={styles.statChip}>
             <Trophy size={16} color={Colors.primary} />
             <Text style={styles.statText}>{currentScore}</Text>
