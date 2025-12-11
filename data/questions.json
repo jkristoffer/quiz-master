@@ -26,17 +26,8 @@
     "type": "multi-select",
     "category": "Art",
     "text": "Which of these are primary colors?",
-    "options": [
-      "Red",
-      "Green",
-      "Blue",
-      "Yellow"
-    ],
-    "correctAnswer": [
-      0,
-      2,
-      3
-    ],
+    "options": ["Red", "Green", "Blue", "Yellow"],
+    "correctAnswer": [0, 2, 3],
     "hint": "Think of basic colors used to mix others (RYB model)."
   },
   {
@@ -59,16 +50,8 @@
     "type": "multi-select",
     "category": "Science",
     "text": "Which of these are mammals?",
-    "options": [
-      "Shark",
-      "Whale",
-      "Dolphin",
-      "Crocodile"
-    ],
-    "correctAnswer": [
-      1,
-      2
-    ],
+    "options": ["Shark", "Whale", "Dolphin", "Crocodile"],
+    "correctAnswer": [1, 2],
     "hint": "They breathe air and nurse their young."
   },
   {
@@ -83,12 +66,7 @@
     "type": "mcq",
     "category": "Geography",
     "text": "What is the capital of France?",
-    "options": [
-      "Berlin",
-      "Madrid",
-      "Paris",
-      "Rome"
-    ],
+    "options": ["Berlin", "Madrid", "Paris", "Rome"],
     "correctAnswer": 2,
     "hint": "Eiffel Tower is here."
   },
@@ -105,16 +83,8 @@
     "type": "multi-select",
     "category": "Tech",
     "text": "Which of these are programming languages?",
-    "options": [
-      "Python",
-      "Snake",
-      "C++",
-      "Cobra"
-    ],
-    "correctAnswer": [
-      0,
-      2
-    ],
+    "options": ["Python", "Snake", "C++", "Cobra"],
+    "correctAnswer": [0, 2],
     "hint": "Reptiles are not code."
   },
   {
@@ -122,12 +92,7 @@
     "type": "mcq",
     "category": "Nature",
     "text": "What is the fastest land animal?",
-    "options": [
-      "Cheetah",
-      "Lion",
-      "Horse",
-      "Eagle"
-    ],
+    "options": ["Cheetah", "Lion", "Horse", "Eagle"],
     "correctAnswer": 0,
     "hint": "It has spots."
   },
@@ -136,12 +101,7 @@
     "type": "mcq",
     "category": "Riddle",
     "text": "I speak without a mouth and hear without ears. I have no body, but I come alive with wind.",
-    "options": [
-      "An Echo",
-      "A Ghost",
-      "A Radio",
-      "A Cloud"
-    ],
+    "options": ["An Echo", "A Ghost", "A Radio", "A Cloud"],
     "correctAnswer": 0,
     "hint": "Repeat after me."
   },
@@ -158,12 +118,7 @@
     "type": "mcq",
     "category": "Math",
     "text": "How many sides does a hexagon have?",
-    "options": [
-      "5",
-      "6",
-      "7",
-      "8"
-    ],
+    "options": ["5", "6", "7", "8"],
     "correctAnswer": 1,
     "hint": "Hex means six."
   },
@@ -172,17 +127,8 @@
     "type": "multi-select",
     "category": "Cooking",
     "text": "Which of these are common ingredients in a basic cake?",
-    "options": [
-      "Flour",
-      "Cement",
-      "Sugar",
-      "Eggs"
-    ],
-    "correctAnswer": [
-      0,
-      2,
-      3
-    ],
+    "options": ["Flour", "Cement", "Sugar", "Eggs"],
+    "correctAnswer": [0, 2, 3],
     "hint": "One of these is for building houses."
   },
   {
@@ -190,12 +136,7 @@
     "type": "mcq",
     "category": "Science",
     "text": "Which planet is closest to the Sun?",
-    "options": [
-      "Earth",
-      "Mars",
-      "Mercury",
-      "Venus"
-    ],
+    "options": ["Earth", "Mars", "Mercury", "Venus"],
     "correctAnswer": 2,
     "hint": "It's the smallest planet."
   },
@@ -204,12 +145,7 @@
     "type": "mcq",
     "category": "Riddle",
     "text": "What gets wetter as it dries?",
-    "options": [
-      "A Towel",
-      "A Sponge",
-      "A Cloud",
-      "Water"
-    ],
+    "options": ["A Towel", "A Sponge", "A Cloud", "Water"],
     "correctAnswer": 0,
     "hint": "You use it after a shower."
   },
@@ -244,12 +180,7 @@
     "type": "mcq",
     "category": "Nature",
     "text": "Which animal is known as the 'King of the Jungle'?",
-    "options": [
-      "The Lion",
-      "The Mouse",
-      "The Frog",
-      "The Cow"
-    ],
+    "options": ["The Lion", "The Mouse", "The Frog", "The Cow"],
     "correctAnswer": 0,
     "hint": "It has a big mane and roars!"
   },
@@ -283,12 +214,7 @@
     "type": "mcq",
     "category": "Nature",
     "text": "What color are most leaves in the jungle?",
-    "options": [
-      "Blue",
-      "Green",
-      "Purple",
-      "Pink"
-    ],
+    "options": ["Blue", "Green", "Purple", "Pink"],
     "correctAnswer": 1,
     "hint": "The color of grass."
   },
@@ -297,16 +223,8 @@
     "type": "multi-select",
     "category": "Nature",
     "text": "Which of these animals can fly?",
-    "options": [
-      "Parrot",
-      "Lion",
-      "Eagle",
-      "Snake"
-    ],
-    "correctAnswer": [
-      0,
-      2
-    ],
+    "options": ["Parrot", "Lion", "Eagle", "Snake"],
+    "correctAnswer": [0, 2],
     "hint": "They have wings!"
   },
   {
@@ -339,12 +257,7 @@
     "type": "mcq",
     "category": "Nature",
     "text": "Which animal has a very long neck?",
-    "options": [
-      "Pig",
-      "Giraffe",
-      "Cat",
-      "Dog"
-    ],
+    "options": ["Pig", "Giraffe", "Cat", "Dog"],
     "correctAnswer": 1,
     "hint": "It eats leaves from tall trees."
   }

@@ -44,7 +44,12 @@ export interface VisualQuestion extends BaseQuestion {
   correctAnswer: VisualZone;
 }
 
-export type Question = MCQQuestion | TrueFalseQuestion | MultiSelectQuestion | NumericQuestion | VisualQuestion;
+export type Question =
+  | MCQQuestion
+  | TrueFalseQuestion
+  | MultiSelectQuestion
+  | NumericQuestion
+  | VisualQuestion;
 
 interface QuestionCardProps {
   question: Question;
@@ -77,13 +82,14 @@ export default function QuestionCard({ question, onAnswer, disabled }: QuestionC
   };
 
   const handleNumericPress = (key: string) => {
-    if (numericInput.length < 8) { // Limit length
-      setNumericInput(prev => prev + key);
+    if (numericInput.length < 8) {
+      // Limit length
+      setNumericInput((prev) => prev + key);
     }
   };
 
   const handleNumericDelete = () => {
-    setNumericInput(prev => prev.slice(0, -1));
+    setNumericInput((prev) => prev.slice(0, -1));
   };
 
   const submitNumeric = () => {
@@ -97,10 +103,7 @@ export default function QuestionCard({ question, onAnswer, disabled }: QuestionC
       {q.options.map((option, index) => (
         <AnimatedScaleButton
           key={index}
-          style={[
-            styles.optionButton,
-            disabled && styles.optionDisabled,
-          ]}
+          style={[styles.optionButton, disabled && styles.optionDisabled]}
           onPress={() => onAnswer(index)}
           disabled={disabled}
         >
@@ -115,11 +118,7 @@ export default function QuestionCard({ question, onAnswer, disabled }: QuestionC
       <View style={{ flex: 1 }}>
         <AnimatedScaleButton
           containerStyle={{ height: '100%' }}
-          style={[
-            styles.tfButton,
-            styles.trueButton,
-            disabled && styles.optionDisabled,
-          ]}
+          style={[styles.tfButton, styles.trueButton, disabled && styles.optionDisabled]}
           onPress={() => onAnswer(true)}
           disabled={disabled}
         >
@@ -129,11 +128,7 @@ export default function QuestionCard({ question, onAnswer, disabled }: QuestionC
       <View style={{ flex: 1 }}>
         <AnimatedScaleButton
           containerStyle={{ height: '100%' }}
-          style={[
-            styles.tfButton,
-            styles.falseButton,
-            disabled && styles.optionDisabled,
-          ]}
+          style={[styles.tfButton, styles.falseButton, disabled && styles.optionDisabled]}
           onPress={() => onAnswer(false)}
           disabled={disabled}
         >
@@ -205,12 +200,28 @@ export default function QuestionCard({ question, onAnswer, disabled }: QuestionC
 
           <View style={styles.zonesOverlay}>
             <View style={styles.zoneRow}>
-              <Pressable style={styles.zone} onPress={() => onAnswer('top-left')} disabled={disabled} />
-              <Pressable style={styles.zone} onPress={() => onAnswer('top-right')} disabled={disabled} />
+              <Pressable
+                style={styles.zone}
+                onPress={() => onAnswer('top-left')}
+                disabled={disabled}
+              />
+              <Pressable
+                style={styles.zone}
+                onPress={() => onAnswer('top-right')}
+                disabled={disabled}
+              />
             </View>
             <View style={styles.zoneRow}>
-              <Pressable style={styles.zone} onPress={() => onAnswer('bottom-left')} disabled={disabled} />
-              <Pressable style={styles.zone} onPress={() => onAnswer('bottom-right')} disabled={disabled} />
+              <Pressable
+                style={styles.zone}
+                onPress={() => onAnswer('bottom-left')}
+                disabled={disabled}
+              />
+              <Pressable
+                style={styles.zone}
+                onPress={() => onAnswer('bottom-right')}
+                disabled={disabled}
+              />
             </View>
           </View>
         </View>
