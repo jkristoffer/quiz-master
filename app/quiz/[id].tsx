@@ -1,33 +1,72 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { View, Text, StyleSheet, Modal, Pressable } from 'react-native';
 import { useLocalSearchParams, useRouter } from 'expo-router';
+
+import { ChevronLeft, X, Clock, Trophy } from 'lucide-react-native';
 
 import ScreenWrapper from '../../components/ScreenWrapper';
 import QuestionCard, { Question } from '../../components/QuestionCard';
 import { Colors } from '../../constants/Colors';
 import questionsData from '../../data/questions.json';
 import { saveProgress } from '../../utils/storage';
+import AnimatedScaleButton from '../../components/AnimatedScaleButton';
 
 export default function QuizScreen() {
-  const { id } = useLocalSearchParams();
+  const { id, score } = useLocalSearchParams<{ id: string; score: string }>();
   const router = useRouter();
 
   const questionIndex = typeof id === 'string' ? parseInt(id, 10) - 1 : 0;
   const question = questionsData[questionIndex] as unknown as Question;
+  const isFirstQuestion = questionIndex === 0;
+
+  // State
+  const incomingScore = score ? parseInt(score, 10) : 0;
+  const [currentScore, setCurrentScore] = useState(incomingScore);
+  const [timeLeft, setTimeLeft] = useState(question.duration || 10);
+  const timerRef = useRef<NodeJS.Timeout | null>(null);
 
   const [feedback, setFeedback] = useState<{
     visible: boolean;
     isCorrect: boolean;
     message: string;
+    earnedPoints: number;
   }>({
     visible: false,
     isCorrect: false,
     message: '',
+    earnedPoints: 0,
   });
 
+  // Reset state on new question
   useEffect(() => {
-    setFeedback({ visible: false, isCorrect: false, message: '' });
+    setFeedback({ visible: false, isCorrect: false, message: '', earnedPoints: 0 });
+    setCurrentScore(incomingScore);
+    setTimeLeft(question.duration || 10);
+    startTimer();
+
+    return () => stopTimer();
   }, [id]);
+
+  const startTimer = () => {
+    stopTimer();
+    timerRef.current = setInterval(() => {
+      setTimeLeft((prev) => {
+        if (prev <= 1) {
+          stopTimer();
+          // handleTimeout(); // Optional: Auto-submit or just stop
+          return 0;
+        }
+        return prev - 1;
+      });
+    }, 1000);
+  };
+
+  const stopTimer = () => {
+    if (timerRef.current) {
+      clearInterval(timerRef.current);
+      timerRef.current = null;
+    }
+  };
 
   // Sound placeholders
   const playSound = async (correct: boolean) => {
@@ -54,14 +93,34 @@ export default function QuizScreen() {
       isCorrect = answer === question.correctAnswer;
     }
 
+    stopTimer();
     await playSound(isCorrect);
 
+    let earnedPoints = 0;
     if (isCorrect) {
       const currentLevel = questionIndex + 1;
       await saveProgress(currentLevel + 1);
-      setFeedback({ visible: true, isCorrect: true, message: 'Correct! Great job!' });
+
+      // Score Calculation
+      const basePoints = question.points || 100;
+      const timeBonus = timeLeft * 10; // Simple bonus: 10 points per second left
+      earnedPoints = basePoints + timeBonus;
+
+      setCurrentScore((prev) => prev + earnedPoints);
+
+      setFeedback({
+        visible: true,
+        isCorrect: true,
+        message: 'Correct! Great job!',
+        earnedPoints,
+      });
     } else {
-      setFeedback({ visible: true, isCorrect: false, message: 'Oops! Try again.' });
+      setFeedback({
+        visible: true,
+        isCorrect: false,
+        message: 'Oops! Try again.',
+        earnedPoints: 0,
+      });
     }
   };
 
@@ -71,11 +130,35 @@ export default function QuizScreen() {
     if (feedback.isCorrect) {
       const nextIndex = questionIndex + 1;
       if (nextIndex < questionsData.length) {
-        router.replace(`/quiz/${nextIndex + 1}`);
+        // Pass score to next question
+        router.replace({
+          pathname: `/quiz/${nextIndex + 1}`,
+          params: { score: currentScore },
+        });
       } else {
-        router.replace('/');
+        // Finish quiz - go to results
+        router.replace({
+          pathname: '/quiz/results',
+          params: { score: currentScore },
+        });
       }
+    } else {
+      // Retry same question - score doesn't increment on retry in this logic?
+      // User didn't specify retry logic details. Resetting score might be harsh.
+      // Keeping current score as is.
+      startTimer(); // Restart timer for retry
+      setTimeLeft(question.duration || 10);
     }
+  };
+
+  const handleBack = () => {
+    if (questionIndex > 0) {
+      router.replace(`/quiz/${questionIndex}`);
+    }
+  };
+
+  const handleExit = () => {
+    router.replace('/');
   };
 
   if (!question) {
@@ -89,8 +172,33 @@ export default function QuizScreen() {
   return (
     <ScreenWrapper style={styles.container}>
       <View style={styles.header}>
-        <Text style={styles.levelText}>Question {questionIndex + 1}</Text>
+        <View style={styles.headerLeft}>
+          {!isFirstQuestion && (
+            <AnimatedScaleButton onPress={handleBack} style={styles.navButton} testID="back-button">
+              <ChevronLeft size={28} color={Colors.primary} />
+            </AnimatedScaleButton>
+          )}
+        </View>
+
+        <View style={styles.statsContainer}>
+          <View style={styles.statChip}>
+            <Clock size={16} color={Colors.text} />
+            <Text style={[styles.statText, timeLeft <= 3 && styles.urgentText]}>{timeLeft}s</Text>
+          </View>
+          <View style={styles.statChip}>
+            <Trophy size={16} color={Colors.primary} />
+            <Text style={styles.statText}>{currentScore}</Text>
+          </View>
+        </View>
+
+        <View style={styles.headerRight}>
+          <AnimatedScaleButton onPress={handleExit} style={styles.navButton} testID="exit-button">
+            <X size={28} color={Colors.secondary} />
+          </AnimatedScaleButton>
+        </View>
       </View>
+
+      <Text style={styles.levelText}>Question {questionIndex + 1}</Text>
 
       <QuestionCard question={question} onAnswer={handleAnswer} disabled={feedback.visible} />
 
@@ -109,9 +217,16 @@ export default function QuizScreen() {
           >
             <Text style={styles.modalTitle}>{feedback.isCorrect ? 'SUCCESS!' : 'UH OH'}</Text>
             <Text style={styles.modalMessage}>{feedback.message}</Text>
-            <Pressable style={styles.modalButton} onPress={handleNext}>
+            {feedback.isCorrect && (
+              <Text style={styles.pointsText}>+{feedback.earnedPoints} Points!</Text>
+            )}
+            <Pressable style={styles.modalButton} onPress={handleNext} testID="modal-next-button">
               <Text style={styles.modalButtonText}>
-                {feedback.isCorrect ? 'NEXT LEVEL' : 'TRY AGAIN'}
+                {feedback.isCorrect
+                  ? questionIndex + 1 < questionsData.length
+                    ? 'NEXT QUESTION'
+                    : 'FINISH QUIZ'
+                  : 'TRY AGAIN'}
               </Text>
             </Pressable>
           </View>
@@ -131,12 +246,29 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   header: {
-    marginBottom: 40,
+    marginBottom: 20,
+    flexDirection: 'row',
     alignItems: 'center',
+    justifyContent: 'space-between',
+    width: '100%',
+    paddingHorizontal: 10,
+  },
+  headerLeft: {
+    width: 48,
+    alignItems: 'flex-start',
+  },
+  headerRight: {
+    width: 48,
+    alignItems: 'flex-end',
+  },
+  navButton: {
+    padding: 8,
+    borderRadius: 50,
+    backgroundColor: 'rgba(255,255,255,0.8)',
   },
   levelText: {
     fontFamily: 'Fredoka_700Bold',
-    fontSize: 32,
+    fontSize: 28,
     color: Colors.primary,
   },
   errorText: {
@@ -191,5 +323,32 @@ const styles = StyleSheet.create({
     fontFamily: 'Fredoka_600SemiBold',
     fontSize: 18,
     color: Colors.white,
+  },
+  statsContainer: {
+    flexDirection: 'row',
+    gap: 8,
+  },
+  statChip: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#F1F5F9',
+    paddingVertical: 6,
+    paddingHorizontal: 12,
+    borderRadius: 99,
+    gap: 6,
+  },
+  statText: {
+    fontFamily: 'Fredoka_600SemiBold',
+    fontSize: 16,
+    color: Colors.text,
+  },
+  urgentText: {
+    color: '#EF4444',
+  },
+  pointsText: {
+    fontFamily: 'Fredoka_700Bold',
+    fontSize: 32,
+    color: Colors.success,
+    marginBottom: 24,
   },
 });

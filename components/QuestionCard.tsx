@@ -12,6 +12,8 @@ export interface BaseQuestion {
   text: string;
   type?: QuestionType;
   hint?: string;
+  duration?: number;
+  points?: number;
 }
 
 export interface MCQQuestion extends BaseQuestion {

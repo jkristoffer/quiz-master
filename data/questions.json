@@ -4,14 +4,18 @@
     "type": "true-false",
     "text": "The next shape in the pattern (1 side, 4 sides, 3 sides...) is a Triangle.",
     "correctAnswer": true,
-    "hint": "Count the number of sides: 1, 4, 3..."
+    "hint": "Count the number of sides: 1, 4, 3...",
+    "duration": 10,
+    "points": 100
   },
   {
     "id": "2",
     "type": "true-false",
     "text": "A greenhouse is made of green bricks.",
     "correctAnswer": false,
-    "hint": "It's where plants grow, needing sunlight!"
+    "hint": "It's where plants grow, needing sunlight!",
+    "duration": 15,
+    "points": 150
   },
   {
     "id": "3",

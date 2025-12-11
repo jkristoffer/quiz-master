@@ -30,3 +30,32 @@ export const resetProgress = async () => {
     // console.error('Failed to reset progress', e);
   }
 };
+
+const SCORES_KEY = 'BRAINSPARK_SCORES_V1';
+
+export interface HighScore {
+  name: string;
+  score: number;
+  date: string;
+}
+
+export const saveHighScore = async (name: string, score: number) => {
+  try {
+    const scores = await getHighScores();
+    const newScore = { name, score, date: new Date().toISOString() };
+    const updatedScores = [...scores, newScore].sort((a, b) => b.score - a.score).slice(0, 10); // Keep top 10
+
+    await AsyncStorage.setItem(SCORES_KEY, JSON.stringify(updatedScores));
+  } catch (e) {
+    // console.error('Failed to save score', e);
+  }
+};
+
+export const getHighScores = async (): Promise<HighScore[]> => {
+  try {
+    const value = await AsyncStorage.getItem(SCORES_KEY);
+    return value ? JSON.parse(value) : [];
+  } catch (e) {
+    return [];
+  }
+};

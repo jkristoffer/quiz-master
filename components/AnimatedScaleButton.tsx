@@ -1,40 +1,42 @@
 import React, { useRef } from 'react';
-import { Pressable, Animated, ViewStyle, StyleProp, GestureResponderEvent } from 'react-native';
+import { Pressable, Animated, ViewStyle, StyleProp } from 'react-native';
 
 interface AnimatedScaleButtonProps {
-  children: React.ReactNode;
-  onPress: (event: GestureResponderEvent) => void;
+  onPress?: () => void;
   style?: StyleProp<ViewStyle>;
   containerStyle?: StyleProp<ViewStyle>;
+  children?: React.ReactNode;
+  activeScale?: number;
   disabled?: boolean;
-  scaleTo?: number;
+  disabledOpacity?: number;
+  testID?: string;
 }
 
 export default function AnimatedScaleButton({
-  children,
   onPress,
   style,
   containerStyle,
-  disabled,
-  scaleTo = 0.95,
+  children,
+  activeScale = 0.95,
+  disabled = false,
+  disabledOpacity = 0.7,
+  testID,
 }: AnimatedScaleButtonProps) {
-  const scaleValue = useRef(new Animated.Value(1)).current;
+  const scale = useRef(new Animated.Value(1)).current;
 
   const handlePressIn = () => {
-    Animated.spring(scaleValue, {
-      toValue: scaleTo,
+    Animated.spring(scale, {
+      toValue: activeScale,
       useNativeDriver: true,
       speed: 20,
-      bounciness: 0,
     }).start();
   };
 
   const handlePressOut = () => {
-    Animated.spring(scaleValue, {
+    Animated.spring(scale, {
       toValue: 1,
       useNativeDriver: true,
       speed: 20,
-      bounciness: 12, // Juicy bounce
     }).start();
   };
 
@@ -44,11 +46,10 @@ export default function AnimatedScaleButton({
       onPressIn={handlePressIn}
       onPressOut={handlePressOut}
       disabled={disabled}
-      style={[{ width: '100%' }, containerStyle]}
+      style={[containerStyle, disabled && { opacity: disabledOpacity }]}
+      testID={testID}
     >
-      <Animated.View style={[style, { transform: [{ scale: scaleValue }] }]}>
-        {children}
-      </Animated.View>
+      <Animated.View style={[{ transform: [{ scale }] }, style]}>{children}</Animated.View>
     </Pressable>
   );
 }
